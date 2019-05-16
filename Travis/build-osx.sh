@@ -3,6 +3,6 @@
 SCRIPT_DIR=$(dirname $0)
 source ${SCRIPT_DIR}/.env
 
-echo "Step macOS: $PWD"
+echo "Build macOS"
 cd $XPC_PLUGIN_PATH
 xcodebuild clean build
