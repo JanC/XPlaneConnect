@@ -1,0 +1,15 @@
+language: c++
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.1
+    # - os: linux
+    #   dist: trusty
+    
+os:
+  - osx
+  # - linux
+  
+
+script:
+  - "./Travis/build.sh"
