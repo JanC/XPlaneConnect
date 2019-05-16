@@ -1,15 +1,16 @@
 language: c++
 matrix:
   include:
-    - os: osx
-      osx_image: xcode10.1
-    # - os: linux
-    #   dist: trusty
-    
+    # - os: osx
+    #   osx_image: xcode10.1
+    - os: linux
+      dist: trusty
+
 os:
   - osx
   # - linux
   
-
+install:
+  - apt-get -y install cmake g++ mesa-common-dev g++-multilib
 script:
   - "./Travis/build.sh"
