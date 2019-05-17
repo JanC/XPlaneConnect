@@ -6,5 +6,11 @@ SCRIPT_DIR=$(dirname $0)
 echo "Build Linux"
 cd $XPC_PLUGIN_PATH
 
-cmake .
+# https://askubuntu.com/questions/530248/asm-errno-h-no-such-file-or-directory
+if [ ! -f /usr/include/asm ]; then
+    ln -s /usr/include/asm-generic/ /usr/include/asm
+fi
+
+# pass the compiler version from the Travis env
+cmake -D CMAKE_C_COMPILER=${CC} -D CMAKE_CXX_COMPILER=${CXX} .
 make
