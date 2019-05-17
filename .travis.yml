@@ -13,6 +13,8 @@ matrix:
           - mesa-common-dev
           - g++-multilib
           - g++-5-multilib
+      env:
+        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
 # os:
 #   # - osx
