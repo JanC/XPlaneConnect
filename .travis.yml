@@ -19,10 +19,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
-# os:
-#   # - osx
-#   - linux
-
 before_install:
     - eval "${MATRIX_EVAL}"
 script:
