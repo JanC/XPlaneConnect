@@ -4,7 +4,6 @@ SCRIPT_DIR=$(dirname $0)
 
 OS_BUILD_SCRIPT="${SCRIPT_DIR}/build-${TRAVIS_OS_NAME}.sh"
 
-file $OS_BUILD_SCRIPT
 if [ ! -f ${OS_BUILD_SCRIPT} ]; then
     echo "OS build script does not exist: '${OS_BUILD_SCRIPT}'"
     exit 1
