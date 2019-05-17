@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 SCRIPT_DIR=$(dirname $0)
-source ${SCRIPT_DIR}/.env
+. ${SCRIPT_DIR}/.env
 
 echo "Build macOS"
 cd $XPC_PLUGIN_PATH
