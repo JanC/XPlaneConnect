@@ -5,12 +5,17 @@ matrix:
     #   osx_image: xcode10.1
     - os: linux
       dist: trusty
+      addons:
+        apt:
+        packages:
+          - cmake 
+          - g++
+          - mesa-common-dev
+          - g++-multilib
 
-os:
-  - osx
-  # - linux
-  
-install:
-  - apt-get -y install cmake g++ mesa-common-dev g++-multilib
+# os:
+#   # - osx
+#   - linux
+
 script:
   - "./Travis/build.sh"
