@@ -9,9 +9,10 @@ matrix:
         apt:
         packages:
           - cmake 
-          - g++
+          - g++-5
           - mesa-common-dev
           - g++-multilib
+          - g++-5-multilib
 
 # os:
 #   # - osx
