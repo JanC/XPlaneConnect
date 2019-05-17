@@ -14,3 +14,9 @@ fi
 # pass the compiler version from the Travis env
 cmake -D CMAKE_C_COMPILER=${CC} -D CMAKE_CXX_COMPILER=${CXX} .
 make
+
+if [ -f "${PWD}/xpc64.xpl" ]; then
+    echo "## Linux Binaries ##"
+    echo "${PWD}/xpc32.xpl"
+    echo "${PWD}/xpc64.xpl"
+fi
