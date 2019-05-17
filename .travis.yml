@@ -7,12 +7,14 @@ matrix:
       dist: trusty
       addons:
         apt:
-        packages:
-          - cmake 
-          - g++-5
-          - mesa-common-dev
-          - g++-multilib
-          - g++-5-multilib
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - cmake 
+            - g++-5
+            - mesa-common-dev
+            - g++-multilib
+            - g++-5-multilib
       env:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
