@@ -1,19 +1,25 @@
 # Get the base Ubuntu image from Docker Hub
-FROM ubuntu:16.04
+FROM  travisci/ci-garnet:packer-1478744932
  
+# https://docs.travis-ci.com/user/languages/cpp/
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+ENV CC=gcc-5
+ENV CXX=g++-5
+
 # Update apps on the base image
 RUN apt-get -y update && apt-get install -y
  
 # Install the Clang compiler
-RUN apt-get -y install cmake g++-5 g++-5-multilib mesa-common-dev 
- 
+RUN apt-get -y install cmake g++-5 g++-5-multilib g++-multilib mesa-common-dev 
+
+#
+#RUN apt-get remove gcc-4.8-multilib
+
 # Copy the current folder which contains C++ source code to the Docker image under /usr/src
 COPY . /usr/src/XPlaneConnect
  
 # Specify the working directory
 WORKDIR /usr/src/XPlaneConnect
  
-# Use Clang to compile the Test.cpp source file
 ENV TRAVIS_OS_NAME=linux
 RUN  ./Travis/build.sh
- 
