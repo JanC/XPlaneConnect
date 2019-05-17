@@ -20,5 +20,7 @@ matrix:
 #   # - osx
 #   - linux
 
+before_install:
+    - eval "${MATRIX_EVAL}"
 script:
   - "./Travis/build.sh"
