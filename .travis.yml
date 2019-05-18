@@ -1,6 +1,7 @@
 language: cpp
 matrix:
   include:
+    
     - os: osx
       osx_image: xcode10.1
       
@@ -18,6 +19,14 @@ matrix:
             - g++-5-multilib
       env:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+  
+    - os: windows
+      env:
+      - LABEL="windows-msvc"
+      - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+      script:
+      - export PATH=$MSBUILD_PATH:$PATH
+      - ./Travis/build-windows.bat
 
 before_install:
     - eval "${MATRIX_EVAL}"
