@@ -47,7 +47,7 @@ jobs:
 
     after_success:
       - ./Travis/binaries-copy.sh
-      - choco install awscli
+      - choco install -y awscli
       - ./Travis/binaries-upload.sh
   
   - stage: Deploy      
