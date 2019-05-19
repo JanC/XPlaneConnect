@@ -10,8 +10,9 @@ xcodebuild clean build CONFIGURATION_BUILD_DIR="."
 BINRAY=${PWD}/mac.xpl
 
 if [ -f ${BINRAY} ]; then
-    echo "## macOS Binray ##"
+    echo "## Copying macOS Binray ##"
     echo "${BINRAY}"
+    cp "${BINRAY}" ~/$TRAVIS_BUILD_NUMBER
 fi
 
 
