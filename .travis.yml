@@ -7,6 +7,7 @@ jobs:
     osx_image: xcode10.1
     script:
       - "./Travis/build-osx.sh"
+
   - stage: build        
     os: linux
     dist: trusty
@@ -22,6 +23,15 @@ jobs:
       - "./Travis/build-linux.sh"
     env:
       - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
+  - stage: build
+    os: windows
+    env:
+      - LABEL="windows-msvc"
+      - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+    script:
+      - export PATH=$MSBUILD_PATH:$PATH
+      - ./Travis/build-windows.bat
   
   - stage: Deploy      
     script: "echo Deploying"
