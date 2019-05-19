@@ -9,11 +9,13 @@ jobs:
     os: osx
     osx_image: xcode10.1
     before_install:
-      - brew install awscli
       - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
-      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
     script:
       - "./Travis/build-osx.sh"
+    after_success:
+      - ./Travis/copy-binaries.sh
+      - brew install awscli
+      - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
 
   - stage: build        
     os: linux
@@ -22,15 +24,17 @@ jobs:
       - eval "${MATRIX_EVAL}"
       - sudo apt-get update
       - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
-      - pip install --user awscli
       - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
-      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
     addons:
       apt:
         sources:
           - ubuntu-toolchain-r-test
     script:
       - "./Travis/build-linux.sh"
+    after_success:
+      - ./Travis/copy-binaries.sh
+      - pip install --user awscli
+      - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
     env:
       - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
