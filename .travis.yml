@@ -39,7 +39,7 @@ jobs:
       - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
     script:
       - export PATH=$MSBUILD_PATH:$PATH
-      - bash ./Travis/build-windows.sh
+      - MSBuild xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
 
     after_success:
       - ./Travis/binaries-copy.sh
