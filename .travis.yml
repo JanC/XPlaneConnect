@@ -1,26 +1,23 @@
 language: cpp
 
-env:
-  global:
-    # include $HOME/.local/bin for `aws`
-    - PATH=$HOME/.local/bin:$PATH
-
-before_install:
-  # set up awscli packages
-  - pip install --user awscli
-  - mkdir -p ~/$TRAVIS_BUILD_NUMBER
-  - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
-  
 after_success:
   - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
-
+  
 jobs:
   include:
-  # - stage: build
-  #   os: osx
-  #   osx_image: xcode10.1
-  #   script:
-  #     - "./Travis/build-osx.sh"
+  - stage: build
+    os: osx
+    osx_image: xcode10.1
+    before_install:
+      # temp off
+      # - eval "${MATRIX_EVAL}"
+      # - sudo apt-get update
+      # - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+      - brew install awscli
+      - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
+      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
+    script:
+      - "./Travis/build-osx.sh"
 
   - stage: build        
     os: linux
@@ -31,7 +28,7 @@ jobs:
       # - sudo apt-get update
       # - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
       - pip install --user awscli
-      - mkdir -p ~/$TRAVIS_BUILD_NUMBER
+      - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
       - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
     addons:
       apt:
@@ -57,4 +54,6 @@ jobs:
       - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
     script: 
       - "echo Deploying binaries"
+      - ./Travis/deploy-zip.sh
       - "ls -al ~/$TRAVIS_BUILD_NUMBER"
+      - "aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER"

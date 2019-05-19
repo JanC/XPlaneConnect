@@ -19,6 +19,7 @@ fi
 pwd
 ls -al
 cp ../xpcPlugin/XPlaneConnect/lin.xpl ~/$TRAVIS_BUILD_NUMBER
+cp ../xpcPlugin/XPlaneConnect/64/lin.xpl ~/$TRAVIS_BUILD_NUMBER/64/
 
 if [ -f "${PWD}/xpc64.xpl" ]; then
     echo "##  Copying Linux Binaries ##"
