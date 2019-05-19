@@ -26,9 +26,10 @@ jobs:
     os: linux
     dist: trusty
     before_install:
-      - eval "${MATRIX_EVAL}"
-      - sudo apt-get update
-      - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+      # temp off
+      # - eval "${MATRIX_EVAL}"
+      # - sudo apt-get update
+      # - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
       - pip install --user awscli
       - mkdir -p ~/$TRAVIS_BUILD_NUMBER
       - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
