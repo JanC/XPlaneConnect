@@ -47,7 +47,7 @@ jobs:
 
     after_success:
       - ./Travis/binaries-copy.sh
-      - choco install -y awscli
+      - (choco install -y awscli) || cat /c/ProgramData/chocolatey/logs/chocolatey.log
       - ./Travis/binaries-upload.sh
   
   - stage: Deploy      
