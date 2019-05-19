@@ -26,8 +26,8 @@ if [ "$TRAVIS_OS_NAME" == "linux" ] ; then
 
     if [ -f "${PWD}/xpc64.xpl" ]; then
         echo "##  Copying Linux Binaries ##"
-        cp "${PWD}/xpc32.xpl" ~/$TRAVIS_BUILD_NUMBER/
-        cp "${PWD}/xpc64.xpl" ~/$TRAVIS_BUILD_NUMBER/64/
+        cp "${PWD}/xpc32.xpl" ~/$TRAVIS_BUILD_NUMBER/lin.xpl
+        cp "${PWD}/xpc64.xpl" ~/$TRAVIS_BUILD_NUMBER/64/lin.xpl
     fi
 fi
 
