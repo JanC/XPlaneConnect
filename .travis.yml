@@ -9,3 +9,6 @@ jobs:
   - os: osx
     script:
       - "echo Building osx"
+  - os: osx
+    script:
+      - "echo Building Windows"
