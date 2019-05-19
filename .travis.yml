@@ -2,44 +2,49 @@ language: cpp
 
 jobs:
   include:
-  - stage: build
-    os: osx
-    osx_image: xcode10.1
-    script:
-      - "./Travis/build-osx.sh"
-    after_success:
-      - ./Travis/binaries-copy.sh
-      - brew install awscli
-      - ./Travis/binaries-upload.sh
+  # - stage: build
+  #   os: osx
+  #   osx_image: xcode10.1
+  #   script:
+  #     - "./Travis/build-osx.sh"
+  #   after_success:
+  #     - ./Travis/binaries-copy.sh
+  #     - brew install awscli
+  #     - ./Travis/binaries-upload.sh
 
-  - stage: build        
-    os: linux
-    dist: trusty
-    before_install:
-      - eval "${MATRIX_EVAL}"
-      - sudo apt-get update
-      - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
+  # - stage: build        
+  #   os: linux
+  #   dist: trusty
+  #   before_install:
+  #     - eval "${MATRIX_EVAL}"
+  #     - sudo apt-get update
+  #     - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+  #   addons:
+  #     apt:
+  #       sources:
+  #         - ubuntu-toolchain-r-test
+  #   script:
+  #     - ./Travis/build-linux.sh
+  #   after_success:
+  #     - ./Travis/binaries-copy.sh
+  #     - pip install --user awscli
+  #     - ./Travis/binaries-upload.sh
+  #   env:
+  #     - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
+  - stage: build
+    os: windows
+    env:
+      - LABEL="windows-msvc"
+      - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
     script:
-      - ./Travis/build-linux.sh
+      - export PATH=$MSBUILD_PATH:$PATH
+      - bash ./Travis/build-windows.sh
+
     after_success:
       - ./Travis/binaries-copy.sh
       - pip install --user awscli
       - ./Travis/binaries-upload.sh
-    env:
-      - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
-  # - stage: build
-  #   os: windows
-  #   env:
-  #     - LABEL="windows-msvc"
-  #     - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
-  #   script:
-  #     - export PATH=$MSBUILD_PATH:$PATH
-  #     - ./Travis/build-windows.bat
   
   - stage: Deploy      
     before_install:
