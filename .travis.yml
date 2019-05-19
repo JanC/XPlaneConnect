@@ -2,17 +2,13 @@ language: cpp
 
 after_success:
   - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
-  
+
 jobs:
   include:
   - stage: build
     os: osx
     osx_image: xcode10.1
     before_install:
-      # temp off
-      # - eval "${MATRIX_EVAL}"
-      # - sudo apt-get update
-      # - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
       - brew install awscli
       - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
       - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
@@ -23,10 +19,9 @@ jobs:
     os: linux
     dist: trusty
     before_install:
-      # temp off
-      # - eval "${MATRIX_EVAL}"
-      # - sudo apt-get update
-      # - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+      - eval "${MATRIX_EVAL}"
+      - sudo apt-get update
+      - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
       - pip install --user awscli
       - mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
       - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
