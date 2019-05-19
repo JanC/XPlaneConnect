@@ -1,17 +1,11 @@
 language: cpp
 
-stages:
-  - build
-  - deploy
 jobs:
   include:
-  - stage: build
+  - stage: New build script
     os: linux
     script:
       - "echo Building Linux"
   - os: osx
     script:
       - "echo Building osx"
-   - stage: deploy   
-    script:
-      - "echo deploying"
