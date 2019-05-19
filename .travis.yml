@@ -2,13 +2,12 @@ language: cpp
 
 jobs:
   include:
-  - stage: New build script
+  - stage: build
     os: linux
-    script:
-      - "echo Building Linux"
-  - os: osx
-    script:
-      - "echo Building osx"
-  - os: osx
-    script:
-      - "echo Building Windows"
+    script: "echo Building Linux"
+  - stage: build        
+    os: osx
+    script: "echo Building osx"
+  
+  - stage: Deploy      
+    script: "echo Deploying"
