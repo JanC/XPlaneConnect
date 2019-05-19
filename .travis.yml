@@ -10,7 +10,18 @@ jobs:
   - stage: build        
     os: linux
     dist: trusty
-    script: "echo Building Linux"
+    before_install:
+      - eval "${MATRIX_EVAL}"
+      - sudo apt-get update
+      - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+    script:
+      - "./Travis/build-linux.sh"
+    env:
+      - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
   
   - stage: Deploy      
     script: "echo Deploying"
