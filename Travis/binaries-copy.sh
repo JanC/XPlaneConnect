@@ -31,5 +31,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ] ; then
     fi
 fi
 
-# if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-# fi
+if [ "$TRAVIS_OS_NAME" == "windows" ]; then
+    cp ../xpcPlugin/XPlaneConnect/win.xpl ~/$TRAVIS_BUILD_NUMBER
+    cp ../xpcPlugin/XPlaneConnect/64/win.xpl ~/$TRAVIS_BUILD_NUMBER/64/
+fi
