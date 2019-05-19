@@ -10,7 +10,9 @@ mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
 
 if [ "$TRAVIS_OS_NAME" == "osx" ] ; then
     BINRAY=${PWD}/mac.xpl
-    cp ../xpcPlugin/XPlaneConnect/mac.xpl ~/$TRAVIS_BUILD_NUMBER
+
+    # cp ../xpcPlugin/XPlaneConnect/mac.xpl ~/$TRAVIS_BUILD_NUMBER
+
     if [ -f ${BINRAY} ]; then
         echo "## Copying macOS Binray ##"
         echo "${BINRAY}"
@@ -19,10 +21,10 @@ if [ "$TRAVIS_OS_NAME" == "osx" ] ; then
 fi
 
 if [ "$TRAVIS_OS_NAME" == "linux" ] ; then
-    # pwd
-    # ls -al
-    cp ../xpcPlugin/XPlaneConnect/lin.xpl ~/$TRAVIS_BUILD_NUMBER
-    cp ../xpcPlugin/XPlaneConnect/64/lin.xpl ~/$TRAVIS_BUILD_NUMBER/64/
+    # # pwd
+    # # ls -al
+    # cp ../xpcPlugin/XPlaneConnect/lin.xpl ~/$TRAVIS_BUILD_NUMBER
+    # cp ../xpcPlugin/XPlaneConnect/64/lin.xpl ~/$TRAVIS_BUILD_NUMBER/64/
 
     if [ -f "${PWD}/xpc64.xpl" ]; then
         echo "##  Copying Linux Binaries ##"

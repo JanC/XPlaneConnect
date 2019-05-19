@@ -5,15 +5,15 @@ notifications:
 
 jobs:
   include:
-  # - stage: build
-  #   os: osx
-  #   osx_image: xcode10.1
-  #   script:
-  #     - "./Travis/build-osx.sh"
-  #   after_success:
-  #     - ./Travis/binaries-copy.sh
-  #     - brew install awscli
-  #     - ./Travis/binaries-upload.sh
+  - stage: build
+    os: osx
+    osx_image: xcode10.1
+    script:
+      - "./Travis/build-osx.sh"
+    after_success:
+      - ./Travis/binaries-copy.sh
+      - brew install awscli
+      - ./Travis/binaries-upload.sh
 
   - stage: build        
     os: linux
@@ -66,4 +66,6 @@ jobs:
       skip_cleanup: true
       on:
         repo: JanC/XPlaneConnect
+        draft: true
+        tags: true
         branch: travis
