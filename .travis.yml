@@ -1,5 +1,8 @@
 language: cpp
 
+notifications:
+  email: false
+
 jobs:
   include:
   # - stage: build
@@ -39,11 +42,11 @@ jobs:
       - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
     script:
       - export PATH=$MSBUILD_PATH:$PATH
-      - MSBuild xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
+      #- MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
 
     after_success:
       - ./Travis/binaries-copy.sh
-      - pip install --user awscli
+      - choco install awscli
       - ./Travis/binaries-upload.sh
   
   - stage: Deploy      
