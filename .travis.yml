@@ -1,12 +1,26 @@
 language: cpp
 
+env:
+  global:
+    # include $HOME/.local/bin for `aws`
+    - PATH=$HOME/.local/bin:$PATH
+
+before_install:
+  # set up awscli packages
+  - pip install --user awscli
+  - mkdir -p ~/$TRAVIS_BUILD_NUMBER
+  - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
+  
+after_success:
+  - aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
+
 jobs:
   include:
-  - stage: build
-    os: osx
-    osx_image: xcode10.1
-    script:
-      - "./Travis/build-osx.sh"
+  # - stage: build
+  #   os: osx
+  #   osx_image: xcode10.1
+  #   script:
+  #     - "./Travis/build-osx.sh"
 
   - stage: build        
     os: linux
@@ -15,6 +29,9 @@ jobs:
       - eval "${MATRIX_EVAL}"
       - sudo apt-get update
       - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
+      - pip install --user awscli
+      - mkdir -p ~/$TRAVIS_BUILD_NUMBER
+      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
     addons:
       apt:
         sources:
@@ -24,14 +41,19 @@ jobs:
     env:
       - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
-  - stage: build
-    os: windows
-    env:
-      - LABEL="windows-msvc"
-      - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
-    script:
-      - export PATH=$MSBUILD_PATH:$PATH
-      - ./Travis/build-windows.bat
+  # - stage: build
+  #   os: windows
+  #   env:
+  #     - LABEL="windows-msvc"
+  #     - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+  #   script:
+  #     - export PATH=$MSBUILD_PATH:$PATH
+  #     - ./Travis/build-windows.bat
   
   - stage: Deploy      
-    script: "echo Deploying"
+    before_install:
+      - pip install --user awscli
+      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
+    script: 
+      - "echo Deploying binaries"
+      - "ls -al ~/$TRAVIS_BUILD_NUMBER"
