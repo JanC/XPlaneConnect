@@ -3,11 +3,14 @@ language: cpp
 jobs:
   include:
   - stage: build
-    os: linux
-    script: "echo Building Linux"
-  - stage: build        
     os: osx
-    script: "echo Building osx"
+    osx_image: xcode10.1
+    script:
+      - "./Travis/build-osx.sh"
+  - stage: build        
+    os: linux
+    dist: trusty
+    script: "echo Building Linux"
   
   - stage: Deploy      
     script: "echo Deploying"
