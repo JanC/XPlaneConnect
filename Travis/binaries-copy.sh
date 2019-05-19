@@ -3,10 +3,12 @@
 SCRIPT_DIR=$(dirname $0)
 . ${SCRIPT_DIR}/.env
 
-echo "Build macOS"
+echo "Copying compiled binaries"
 cd $XPC_PLUGIN_PATH
 
-if [ "$TRAVIS_OS_NAME" == "osx"   ] ; then
+mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
+
+if [ "$TRAVIS_OS_NAME" == "osx" ] ; then
     BINRAY=${PWD}/mac.xpl
     cp ../xpcPlugin/XPlaneConnect/mac.xpl ~/$TRAVIS_BUILD_NUMBER
     if [ -f ${BINRAY} ]; then
@@ -16,7 +18,7 @@ if [ "$TRAVIS_OS_NAME" == "osx"   ] ; then
     fi
 fi
 
-if [ "$TRAVIS_OS_NAME" == "osx"   ] ; then
+if [ "$TRAVIS_OS_NAME" == "linux" ] ; then
     # pwd
     # ls -al
     cp ../xpcPlugin/XPlaneConnect/lin.xpl ~/$TRAVIS_BUILD_NUMBER
@@ -29,6 +31,5 @@ if [ "$TRAVIS_OS_NAME" == "osx"   ] ; then
     fi
 fi
 
-if [ "$TRAVIS_OS_NAME" == "windows"   ] ; then
-fi
-
+# if [ "$TRAVIS_OS_NAME" == "windows" ]; then
+# fi
