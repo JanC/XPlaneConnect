@@ -5,6 +5,6 @@ SCRIPT_DIR=$(dirname $0)
 echo "Running deploy zip script "
 mkdir XPlaneConnect
 cp -r ~/$TRAVIS_BUILD_NUMBER/* XPlaneConnect
-zip -r release.zip XPlaneConnect
-cp release.zip ~/$TRAVIS_BUILD_NUMBER
+zip -r XPlaneConnect.zip XPlaneConnect
+cp XPlaneConnect.zip ~/$TRAVIS_BUILD_NUMBER
 
