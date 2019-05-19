@@ -1,71 +1,15 @@
 language: cpp
-
-notifications:
-  email: false
-
-jobs:
+matrix:
   include:
-  - stage: build
-    os: osx
-    osx_image: xcode10.1
-    script:
-      - "./Travis/build-osx.sh"
-    after_success:
-      - ./Travis/binaries-copy.sh
-      - brew install awscli
-      - ./Travis/binaries-upload.sh
+    - os: windows
+      env:
+      - LABEL="windows-msvc"
+      - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+      script:
+      - export PATH=$MSBUILD_PATH:$PATH
+      - ./Travis/build-windows.bat
 
-  - stage: build        
-    os: linux
-    dist: trusty
-    before_install:
-      - eval "${MATRIX_EVAL}"
-      - sudo apt-get update
-      - sudo apt-get install -y cmake g++-5 mesa-common-dev g++-multilib g++-5-multilib
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-    script:
-      - ./Travis/build-linux.sh
-    after_success:
-      - ./Travis/binaries-copy.sh
-      - pip install --user awscli
-      - ./Travis/binaries-upload.sh
-    env:
-      - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
-  # - stage: build
-  #   os: windows
-  #   language: bash
-  #   env:
-  #     - LABEL="windows-msvc"
-  #     - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
-  #   script:
-  #     - export PATH=$MSBUILD_PATH:$PATH
-  #     #- MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
-
-  #   after_success:
-  #     - ./Travis/binaries-copy.sh
-  #     - (choco install -y awscli) || cat /c/ProgramData/chocolatey/logs/chocolatey.log
-  #     - ./Travis/binaries-upload.sh
-  
-  - stage: Deploy      
-    before_install:
-      - pip install --user awscli
-      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
-    script: 
-      - "echo Deploying binaries"
-      - ./Travis/binaries-zip.sh
-      - ./Travis/binaries-upload.sh
-    deploy:
-      provider: releases
-      api_key:
-        secure: cVz6yKqQqqdNY9bydiPh6BDSFyIoQ+PlVNIGJAkZ/d8aNA7cPYdZJzkF0kMbmm9G2dcjmPGBlHqHgb2y7+swUBBd+l087kJANoVtJXiv7sa02zomA7HnlHVTlEqX/i3UeJSAPzWb4HgYsFrcvUvpZ5+Rx9SFwIUrgFcGgbxDu1j6hC7MkN/3/5ZgwnPeRUYqsWaLgwSq1ipf71ln6/dM9FTk+BWRwv1OZ/cQAA/rU5XrqPZ370NcPLHzldUzINaOafDvuWYtipfmiPza8actvBA3zuUXfao6g6WxOE1QMAnozlnwy3pGYFZOY/Y+VQTg4g05EZs+GfE7lk5S7TvX2sRmNxSCXKX3NK4MTCit8gh0o5wpK6L2gMMEQGwHYwaIoXDju5Y9ouSUB0WZebITtaB5Ft0jF6f+ZBv6y1d3eR5A17ekavw5fjba+ntGooGnKiox7/LRgV7mPQc6u7DZnaBHU1DamDLkpBk9N/IybLkSCE8xo7cYMNYhMVkM7kbM7Lo+wCZcACEA5EhJxSiSxh/ThznSgEvSK1Ql/gGcQASwOPzcZ/TTc6DOQ/nd285IgmNSyPcXgraPT/toFbl3eQ0EpPjqE9NFQ5fZJqJMezrwXXr3buoMwQrE/33rPs/u7aF8EMbEpJksi2XkaIIWdig/g731uIkNvscbwNQkVZo=
-      file: XPlaneConnect.zip
-      skip_cleanup: true
-      on:
-        repo: JanC/XPlaneConnect
-        draft: true
-        tags: true
-        branch: travis
+before_install:
+    - eval "${MATRIX_EVAL}"
+script:
+  - "./Travis/build.sh"
