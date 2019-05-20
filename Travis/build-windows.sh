@@ -7,12 +7,12 @@ echo "Building Windows"
 echo "ls /usr/bin"
 ls -al /usr/bin
 
-echo "ls $MSBUILD_PATH"
-ls -al "$MSBUILD_PATH"
+#echo "ls $MSBUILD_PATH"
+#ls -al "$MSBUILD_PATH"
 
 file $MSBUILD_PATH/MSBuild.exe
 
-#MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
+MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln //p:Configuration=Release
 echo "Done"
 
 # echo $PATH
