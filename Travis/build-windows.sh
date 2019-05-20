@@ -8,7 +8,7 @@ echo "ls /usr/bin"
 ls -al /usr/bin
 
 echo "ls $MSBUILD_PATH"
-ls -al $MSBUILD_PATH
+ls -al "$MSBUILD_PATH"
 
 file $MSBUILD_PATH/MSBuild.exe
 
