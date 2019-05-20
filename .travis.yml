@@ -10,8 +10,3 @@ matrix:
       script:
       - export PATH=$MSBUILD_PATH:$PATH
       - MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln
-
-before_install:
-    - eval "${MATRIX_EVAL}"
-script:
-  - "./Travis/build.sh"
