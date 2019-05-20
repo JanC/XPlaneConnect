@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-# MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
-# MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release /p:Platform=x64
-
 echo "Building Windows"
-MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
+
+MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln //p:Configuration=Release
+MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln //p:Configuration=Release /p:Platform=x64
+
+# MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln /p:Configuration=Release
 echo "Done"
 
 # echo $PATH
