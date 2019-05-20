@@ -10,7 +10,8 @@ ls -al /usr/bin
 #echo "ls $MSBUILD_PATH"
 #ls -al "$MSBUILD_PATH"
 
-file $MSBUILD_PATH/MSBuild.exe
+#file $MSBUILD_PATH/MSBuild.exe
+echo "PATH: $PATH"
 
 MSBuild.exe xpcPlugin/xpcPlugin/xpcPlugin.sln //p:Configuration=Release
 echo "Done"
