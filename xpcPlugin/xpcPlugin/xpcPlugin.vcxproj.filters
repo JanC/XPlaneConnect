@@ -56,6 +56,12 @@
     <ClCompile Include="..\MessageHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\SDK\Libraries\Win\XPLM.lib">
