@@ -1,8 +1,7 @@
+branches:
+  only:
+  - appveyor
 image: Visual Studio 2017
-configuration: Release
-platform:
-- x86
-- x64
 before_build:
 - cmd: vswhere -products *
 build:
