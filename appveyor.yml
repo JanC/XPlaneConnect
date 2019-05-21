@@ -5,10 +5,11 @@ image: Visual Studio 2017
 
 configuration: Release
 platform:
+  - x86
   - x64
 build:
   project: xpcPlugin/xpcPlugin/xpcPlugin.sln
   verbosity: normal
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
