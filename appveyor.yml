@@ -11,5 +11,9 @@ build:
   project: xpcPlugin/xpcPlugin/xpcPlugin.sln
   verbosity: normal
 
-# on_finish:
+artifacts:
+  - path: xpcPlugin/xpc-windows-32.xpl
+  - path: xpcPlugin/xpc-windows-64.xpl
+
+  # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
