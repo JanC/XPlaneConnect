@@ -3,6 +3,10 @@ language: cpp
 notifications:
   email: false
 
+branches:
+  only:
+  - travis
+
 jobs:
   include:
   - stage: build
