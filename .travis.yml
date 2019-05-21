@@ -1,5 +1,11 @@
 language: cpp
 os: windows
+
+
+branches:
+  only:
+  - travis-windows
+
 env:
   - MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
 script:
