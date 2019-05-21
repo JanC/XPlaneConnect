@@ -12,7 +12,9 @@ build:
   verbosity: normal
 
 artifacts:
-  - path: xpcPlugin/XPlaneConnect/64/win.xpl
-  - path: xpcPlugin/XPlaneConnect/win.xpl
-# on_finish:
+  - path: xpcPlugin/xpc-windows-32.xpl
+  - path: xpcPlugin/xpc-windows-64.xpl
+
+  
+  # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
