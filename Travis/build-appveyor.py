@@ -21,7 +21,7 @@ client = AppveyorClient(api_key)
 
 # Start the build
 print("Starting AppVeyor build on branch {branch} commit {commit}".format(branch=branch, commit=commit))
-build = client.builds.start(account, project, branch=branch, commit=commit)
+build = client.builds.start(account, project, commit=commit)
 # print(json.dumps(build))
 
 # Get the build version from
