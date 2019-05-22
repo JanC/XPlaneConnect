@@ -33,6 +33,10 @@ pull_request_number = os.environ.get('GIT_PULL_REQUEST', None)
 commit = os.environ.get('GIT_COMMIT', None)
 branch = os.environ.get('GIT_BRANCH', None)
 
+# Travis passes a 'false' value when the build is not a pull request
+if pull_request_number == "false":
+    pull_request_number = None
+
 def start_build(client, branch, commit, pull_request_number):
     if pull_request_number is not None:
         commit = None # if both are supplied, use PR
@@ -102,7 +106,14 @@ def download_artifacts(client, build, destination_directory):
 
 
 def main():
+    logging.info("""Starting appveyor build with
+    pull_request_number: {pull_request_number}
+    commit: {commit}
+    branch: {branch}
+    """.format(pull_request_number=pull_request_number, commit=commit, branch=branch))
+
     client = AppveyorClient(api_key)            
+
     build = start_build(client, branch, commit, pull_request_number)
     build_version = build['version']
 
