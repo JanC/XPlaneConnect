@@ -4,6 +4,8 @@ import time
 import os
 import logging
 import sys
+from pathlib import Path
+import requests
 from appveyor_client import AppveyorClient
 
 
@@ -16,6 +18,7 @@ logging.basicConfig(level=logging.INFO)
 account = os.environ['APPVEYOR_ACCOUNT'] #'JanC'
 project = os.environ['APPVEYOR_PROJECT'] #'xplaneconnect'
 api_key = os.environ['APPVEYOR_API_KEY'] #'appveyor'
+out_dir = os.environ['OUT_DIR'] #'appveyor'
 commit = os.environ['GIT_COMMIT'] #'1d9427ad'
 branch = os.environ['GIT_BRANCH'] #'appveyor'
 
@@ -51,7 +54,18 @@ def poll_build(client, build_version):
         exit(1)
     return build
 
-def download_artifacts(client, build):
+def download_artifact(destination_directory, artifact_file_name, artifact_url):
+    logging.info("Downloading artifact '{artifact_file_name}'".format(artifact_file_name=artifact_file_name))
+    request = requests.get(artifact_url, allow_redirects=True)
+
+    file_path = os.path.join(destination_directory, artifact_file_name)
+    out_dir = os.path.dirname(file_path)
+    path = Path(out_dir)
+    path.mkdir(parents=True, exist_ok=True)
+    logging.info("Writing artifcat to {}".format(file_path))
+    open(file_path, 'wb').write(request.content)
+
+def download_artifacts(client, build, destination_directory):
     #job_id = '9gnwou96uci5iytr'
     for job in build['jobs']:
         job_id = job['jobId']
@@ -62,19 +76,22 @@ def download_artifacts(client, build):
         for artifact in artifacts:
             file_name = artifact['fileName']
             file_url = client.buildjobs.artifact_url(job_id, file_name)
-            logging.info("{file_name}: {file_url}".format(file_name=file_name, file_url=file_url))
+            logging.info("""
+                File name: {file_name}
+                Download URL: {file_url}
+                """.format(file_name=file_name, file_url=file_url))
 
-            # Todo actual download
+            download_artifact(destination_directory, file_name, file_url)
+
 
 def main():
     client = AppveyorClient(api_key)            
     build = start_build(client, branch, commit)
-
     build_version = build['version']
     # build_version = "1.0.41"
-
+    # out_dir = "/tmp/test"
     build = poll_build(client, build_version = build_version)
-    download_artifacts(client, build)
+    download_artifacts(client, build, out_dir)
 
 main()
 
