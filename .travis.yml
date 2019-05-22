@@ -47,11 +47,11 @@ jobs:
     before_install:
       - pip3 install git+https://github.com/JanC/appveyor-client.git@artifacts
     script:
-      - GIT_BRANCH=$TRAVIS_BRANCH GIT_COMMIT=$TRAVIS_COMMIT OUT_DIR=~/appveyor ./Travis/build-appveyor.py
-    # after_success:
-    #   - ./Travis/binaries-copy.sh
-    #   - pip install --user awscli
-    #   - ./Travis/binaries-upload.sh
+      - GIT_BRANCH=$TRAVIS_BRANCH GIT_COMMIT=$TRAVIS_COMMIT OUT_DIR=~/XPlaneConnect ./Travis/build-appveyor.py
+    after_success:
+      - ./Travis/binaries-copy.sh
+      - pip install --user awscli
+      - ./Travis/binaries-upload.sh
     env:
       
 
