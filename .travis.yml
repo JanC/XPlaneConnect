@@ -44,7 +44,7 @@ jobs:
     before_install:
       - pip3 install git+https://github.com/JanC/appveyor-client.git@artifacts  awscli
     script:
-      - GIT_BRANCH=$TRAVIS_BRANCH GIT_COMMIT=$TRAVIS_COMMIT OUT_DIR=$TRAVIS_BUILD_DIR ./Travis/build-appveyor.py
+      - GIT_PULL_REQUEST=$TRAVIS_PULL_REQUEST GIT_BRANCH=$TRAVIS_BRANCH GIT_COMMIT=$TRAVIS_COMMIT OUT_DIR=$TRAVIS_BUILD_DIR ./Travis/build-appveyor.py
     after_success:
       - ./Travis/binaries-copy.sh
       - ./Travis/binaries-upload.sh

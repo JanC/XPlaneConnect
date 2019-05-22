@@ -10,8 +10,17 @@ from appveyor_client import AppveyorClient
 
 
 # pip3 install git+https://github.com/JanC/appveyor-client.git@artifacts
-# usage:
-# APPVEYOR_ACCOUNT=JanC APPVEYOR_PROJECT=xplaneconnect GIT_COMMIT=d60349d71e5dc3452b7a686d0d4390a57df0aad1 GIT_BRANCH=travis-appveyor APPVEYOR_API_KEY=xxxx OUT_DIR=/tmp/test ./Travis/build-appveyor.py
+# usage 
+# export APPVEYOR_ACCOUNT=JanC 
+# export APPVEYOR_PROJECT=xplaneconnect 
+# export APPVEYOR_API_KEY=xxxx
+# export OUT_DIR=/tmp/test
+
+# for commit builds:
+# GIT_COMMIT=d60349d71e5dc3452b7a686d0d4390a57df0aad1 GIT_BRANCH=travis-appveyor  ./Travis/build-appveyor.py
+
+# for PR builds
+# GIT_PULL_REQUEST=2 ./Travis/build-appveyor.py
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,13 +28,21 @@ account = os.environ['APPVEYOR_ACCOUNT'] #'JanC'
 project = os.environ['APPVEYOR_PROJECT'] #'xplaneconnect'
 api_key = os.environ['APPVEYOR_API_KEY'] #'appveyor'
 out_dir = os.environ['OUT_DIR'] #'appveyor'
-commit = os.environ['GIT_COMMIT'] #'1d9427ad'
-branch = os.environ['GIT_BRANCH'] #'appveyor'
 
+pull_request_number = os.environ.get('GIT_PULL_REQUEST', None)
+commit = os.environ.get('GIT_COMMIT', None)
+branch = os.environ.get('GIT_BRANCH', None)
 
-def start_build(client, branch, tag):
-    logging.info("Starting AppVeyor build on branch {branch} commit {commit}".format(branch=branch, commit=commit))
-    build = client.builds.start(account, project, commit=commit)
+def start_build(client, branch, commit, pull_request_number):
+    if pull_request_number is not None:
+        commit = None # if both are supplied, use PR
+        logging.info("Starting AppVeyor build on PR {pull_request_number}".format(pull_request_number=pull_request_number))
+    elif commit is not None:
+        logging.info("Starting AppVeyor build on branch {branch} commit {commit}".format(branch=branch, commit=commit))
+    else:
+        raise ValueError('Either GIT_PULL_REQUEST or GIT_COMMIT env must be specified')
+    
+    build = client.builds.start(account, project, commit=commit, pull_request_number=pull_request_number)
     # print(json.dumps(build))
 
     # Get the build version from
@@ -86,7 +103,7 @@ def download_artifacts(client, build, destination_directory):
 
 def main():
     client = AppveyorClient(api_key)            
-    build = start_build(client, branch, commit)
+    build = start_build(client, branch, commit, pull_request_number)
     build_version = build['version']
 
     # build_version = "1.0.51"
