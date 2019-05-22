@@ -18,11 +18,12 @@ function copy_binary() {
         cp ${binary_path} ${binary_dst_path}
     fi
 }
+echo "PWD: ${PWD}"
 
-copy_binary "${PWD}/xpc-osx-64.xpl" ~/$TRAVIS_BUILD_NUMBER/
+copy_binary "${PWD}/xpc-osx-64.xpl" ~/$TRAVIS_BUILD_NUMBER/mac.xpl
 
-copy_binary "${PWD}/xpc-linux-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64
-copy_binary "${PWD}/xpc-linux-32.xpl" ~/$TRAVIS_BUILD_NUMBER/
-
-copy_binary "${PWD}/xpc-windows-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64
-copy_binary "${PWD}/xpc-windows-32.xpl" ~/$TRAVIS_BUILD_NUMBER/
+copy_binary "${PWD}/xpc-linux-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64/lin.xpl
+copy_binary "${PWD}/xpc-linux-32.xpl" ~/$TRAVIS_BUILD_NUMBER/lin.xpl
+ 
+copy_binary "${PWD}/xpc-windows-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64/win.xpl
+copy_binary "${PWD}/xpc-windows-32.xpl" ~/$TRAVIS_BUILD_NUMBER/win.xpl

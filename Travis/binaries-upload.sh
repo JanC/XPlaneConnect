@@ -5,5 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 echo "Uploading compiled binaries to AWS"
 
+ls -lR ~/$TRAVIS_BUILD_NUMBER
+
 aws s3 sync ~/$TRAVIS_BUILD_NUMBER s3://aeronavmap/$TRAVIS_BUILD_NUMBER
 

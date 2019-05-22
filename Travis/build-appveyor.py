@@ -11,7 +11,7 @@ from appveyor_client import AppveyorClient
 
 # pip3 install git+https://github.com/JanC/appveyor-client.git@artifacts
 # usage:
-# APPVEYOR_ACCOUNT=JanC APPVEYOR_PROJECT=xplaneconnect GIT_COMMIT=d60349d71e5dc3452b7a686d0d4390a57df0aad1 GIT_BRANCH=travis-appveyor APPVEYOR_API_KEY=xxxx ./build.py
+# APPVEYOR_ACCOUNT=JanC APPVEYOR_PROJECT=xplaneconnect GIT_COMMIT=d60349d71e5dc3452b7a686d0d4390a57df0aad1 GIT_BRANCH=travis-appveyor APPVEYOR_API_KEY=xxxx OUT_DIR=/tmp/test ./Travis/build-appveyor.py
 
 logging.basicConfig(level=logging.INFO)
 
@@ -88,8 +88,9 @@ def main():
     client = AppveyorClient(api_key)            
     build = start_build(client, branch, commit)
     build_version = build['version']
-    # build_version = "1.0.41"
-    # out_dir = "/tmp/test"
+
+    # build_version = "1.0.51"
+    
     build = poll_build(client, build_version = build_version)
     download_artifacts(client, build, out_dir)
 
