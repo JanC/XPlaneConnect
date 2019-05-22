@@ -77,7 +77,7 @@
 #define RECVPORT 49009 // Port that the plugin receives commands on
 #define OPS_PER_CYCLE 20 // Max Number of operations per cycle
 
-#define XPC_PLUGIN_VERSION "1.3-rc.1"
+#define XPC_PLUGIN_VERSION "1.3.0"
 
 using namespace std;
 
