@@ -1,0 +1,20 @@
+branches:
+  only:
+  - appveyor
+image: Visual Studio 2017
+
+configuration: Release
+platform:
+  - Win32
+  - x64
+build:
+  project: xpcPlugin/xpcPlugin/xpcPlugin.sln
+  verbosity: normal
+
+artifacts:
+  - path: xpcPlugin/xpc-windows-32.xpl
+  - path: xpcPlugin/xpc-windows-64.xpl
+
+  
+  # on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
