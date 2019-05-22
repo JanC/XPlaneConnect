@@ -6,34 +6,23 @@ SCRIPT_DIR=$(dirname $0)
 echo "Copying compiled binaries"
 cd $XPC_PLUGIN_PATH
 
+
 mkdir -p ~/$TRAVIS_BUILD_NUMBER/64/
 
-if [ "$TRAVIS_OS_NAME" == "osx" ] ; then
-    BINRAY=${PWD}/mac.xpl
+function copy_binary() {
+    local binary_path=$1
+    local binary_dst_path=$2
 
-    # cp ../xpcPlugin/XPlaneConnect/mac.xpl ~/$TRAVIS_BUILD_NUMBER
-
-    if [ -f ${BINRAY} ]; then
-        echo "## Copying macOS Binray ##"
-        echo "${BINRAY}"
-        cp "${BINRAY}" ~/$TRAVIS_BUILD_NUMBER
+    if [ -f "${binary_path}" ]; then
+        echo "Copying ${binary_path} to ${binary_dst_path}"
+        cp ${binary_path} ${binary_dst_path}
     fi
-fi
+}
 
-if [ "$TRAVIS_OS_NAME" == "linux" ] ; then
-    # # pwd
-    # # ls -al
-    # cp ../xpcPlugin/XPlaneConnect/lin.xpl ~/$TRAVIS_BUILD_NUMBER
-    # cp ../xpcPlugin/XPlaneConnect/64/lin.xpl ~/$TRAVIS_BUILD_NUMBER/64/
+copy_binary "${PWD}/xpc-osx-64.xpl" ~/$TRAVIS_BUILD_NUMBER/
 
-    if [ -f "${PWD}/xpc64.xpl" ]; then
-        echo "##  Copying Linux Binaries ##"
-        cp "${PWD}/xpc32.xpl" ~/$TRAVIS_BUILD_NUMBER/lin.xpl
-        cp "${PWD}/xpc64.xpl" ~/$TRAVIS_BUILD_NUMBER/64/lin.xpl
-    fi
-fi
+copy_binary "${PWD}/xpc-linux-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64
+copy_binary "${PWD}/xpc-linux-32.xpl" ~/$TRAVIS_BUILD_NUMBER/
 
-if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-    cp ../xpcPlugin/XPlaneConnect/win.xpl ~/$TRAVIS_BUILD_NUMBER
-    cp ../xpcPlugin/XPlaneConnect/64/win.xpl ~/$TRAVIS_BUILD_NUMBER/64/
-fi
+copy_binary "${PWD}/xpc-windows-64.xpl" ~/$TRAVIS_BUILD_NUMBER/64
+copy_binary "${PWD}/xpc-windows-32.xpl" ~/$TRAVIS_BUILD_NUMBER/
