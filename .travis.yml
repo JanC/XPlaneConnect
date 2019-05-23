@@ -1,11 +1,12 @@
 language: cpp
 
+# test PR commit
+
 # Build only pull requests or tags
 if: tag IS present OR type IN (pull_request)
 
 notifications:
   email: false
-
 jobs:
   include:
   - stage: build
