@@ -1,10 +1,29 @@
 language: cpp
 
 # Build only pull requests or tags
-if: tag IS present OR type IN (pull_request)
+if: tag IS present OR type IN (pull_request) OR branch =~ /^ci-.*$/
 
 notifications:
   email: false
+
+env:
+  global:
+  - HOMEBREW_NO_AUTO_UPDATE=1
+  
+  - APPVEYOR_ACCOUNT=JanC
+  - APPVEYOR_PROJECT=xplaneconnect
+
+  - AWS_BUCKET_NAME=aeronavmap
+  - AWS_SYNC_FOLDER=$TRAVIS_BUILD_NUMBER
+  
+  # APPVEYOR_API_KEY
+  - secure: "TCVUOXQaZOzZdn+8XBQZ1Es+5MtcM9WvdZIu7HY+n4ywFP+DCENlp4pTiPix68gJR6hUxYeJD80Af7mK5l4axFPhCuMP4FLSLIpob/La4zGm/TpZ4dAEXZXv0Z407CRg/efyGD9qkiOBCrTfdtmqjvKR2Bm5Hii6TOyiGn9eFHjSrZwdRqNmALMoMf79Aq15+Rn0weyJyXd9rc3tqEud9LzIHunSAmOfGlE3395Dy3SkzjNH12gU0aIk6/gFYXrrlHA5O4/7M3BMcZhK7l/XUES5ljMv0ojJlpJ2uFMNnVQdV7bMQGZshQ5i5oR8kYcUIEmC08VRp+5zsl6sYeUJSdUOXHOPgWwYD7VYOxz7khr5lCAw5LtIpe+OGMJX+8indWFZ4rtZbo48iEMYP3J65SOkXeWMzCzvxeMBUmh2NVO+z2ZBZ0FoNSl2GZc0Gfx96kJB8Gn+Wss1Ig0mzPDHaiQDdwjxS5hk/YG1Te3sH0dZGduRtyyacsjylK6BV9OJz21GghvE1KA5VPJfidlb11f98mitTWO5h3wwvDtcDh7HQepGUFUSF7psAVyyGo474SQdFaongWheOTOcwwKos8A4Ke+yoZAOiBnDlsanz82OmRkxcJWREUF5tsvmU40RQoj+9z9A3UkrWnGZuMSe0SuhzCYaTGVz9JAlGV00qyA="
+
+  # AWS_ACCESS_KEY_ID
+  - secure: "Q6lhohENDD4LFjaUNmqZejPiBzjJNN4zFZ6pxJms9CLOezq9ezuUE0vRxihoBdZEv9l++4xMP3wuX4GVrftCgZ7MYkqCofkx4YG780Dy2SvyLjD4d0BYK+/akebnwpJKelPg7etWlrMVE83gnXQWbCZgZHexM6f51K69dyDWGh3Tyobs+Q5Jn3TPdCH7YLnM8cmk5kCwbufXcV6g8GGTL1sgYAEk9JyEW6NDV9ISWWVOlnaa6Q5S3CgfJcARk/tkm+SctAXk44BuPsN415tFfVtBFiS/n+iEbSc5AuL8HIua7gMNGA0/8HMyteXN2NE3zji/x0K+Ad4+WU9KxeFZVXYLHvVCmXHJ/37jJNmWD2Mkra8E1BHGdaMpLellnvEuYIBb3tZWA5LE79FvilrO2x+cx91N9TQ3Y7XcJCP/4GYkWNDlmNyP4A9HSnCaY5vlkJ4/+UsPX9wHR4Pv9AZ1iA768yojjZNIuZRPhSm5HoQzL9EfaN53nmlSjNmkLCB+39xCX7+q0lgQVg2lva6SfQyeUxrSG3Dl9GfB4e1gI3+QSyRck0M9AUGIg8dgzIzc6VHTyO9lL4swUuXDhG3bE/tahum31PgCrzYu8WAeyuZCWrbWSOyUPMtSg+1QUGL0vujQIdlQc2LbLuxRzczePVj6iAAqaTJ6M60hbuB8V/s="
+
+  # AWS_SECRET_ACCESS_KEY
+  - secure: "XsM6tDXuBenGN11iR2bkdQbCzEr8mUgPpwL2oul6lLxc1H5N+Ne108SlNFe/FHosnv7taCGAIvbKtG9d5d10ue+Dww/Q1/a8DYLhF5BHbiwQYrJ/raACzH7xXW9gwcb/yS/ZKsPQhcNYrK83MJQi9wbciNy11jagIbmZsi4TKxboYYMOnhWeyPtfZlGXC93gNBw4uFbnadsXB7fUojBjDNFFW5uRaoExR7BDgNO/sAgn19RkZV+ATBDz8VyyXtC35I0Tmu+cRDu4CYLr6TkosYG4oEWyKnbDFFrnQmZGm9IBILVoxsaSEkfpPJj7bB650osS+S1uKnbjPjiAn2KlxcFiX9XvKTkJbLrUArFHHO4JGNIIGl290lks9nak/jnz4xPZVmntZoCtfcY9IKr7T7BlQ0hx5M2EH8KIs0cJlYduQ/uTSZbF2yRxLs2P7GrbLUizJUnxarvQobkj3/82LIdqyao+swE9uaVdRr/o3wwOwnTAz5btXaoWj78nabvETLToFy+EdSd8K1oFld7IkAhwv9CPRO2vRmOJxzUcZqh0kTCj2SXE3sYCyQsVz9lcUVxIbG+C2OcAyoQ8tg9vQwOeFpSYn+XiwBy1GQzcsLSs88bNQo8sr9zkqCf4qAf41vvHvMsO8p91AsoiUwpe8fD/BVTdx594BIr+FRyu3vw="
 
 jobs:
   include:
@@ -55,7 +74,7 @@ jobs:
   - stage: Deploy      
     before_install:
       - pip install --user awscli
-      - aws s3 sync s3://aeronavmap/$TRAVIS_BUILD_NUMBER ~/$TRAVIS_BUILD_NUMBER
+      - aws s3 sync s3://${AWS_BUCKET_NAME}/${AWS_SYNC_FOLDER} ~/${AWS_SYNC_FOLDER}
     script: 
       - "echo Deploying binaries"
       - ./Travis/binaries-zip.sh
