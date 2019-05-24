@@ -6,80 +6,109 @@
 trigger:
 - ms-*
 
-jobs:
-- job: Build_macOS
-  pool:
-    vmImage: 'macos-latest'
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_macOS
+      pool:
+        vmImage: 'macos-latest'
 
-  steps:
-  - task: Xcode@5
-    inputs:
-      actions: 'build'
-      scheme: ''
-      sdk: 'macosx10.14'
-      configuration: 'Release'
-      xcWorkspacePath: 'xpcPlugin/xpcPlugin.xcodeproj'
-      xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'xpc-macos'
-      targetPath: 'xpcPlugin/output'
+      steps:
+      - task: Xcode@5
+        inputs:
+          actions: 'build'
+          scheme: ''
+          sdk: 'macosx10.14'
+          configuration: 'Release'
+          xcWorkspacePath: 'xpcPlugin/xpcPlugin.xcodeproj'
+          xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-macos'
+          targetPath: 'xpcPlugin/output/'
 
-- job: Build_linux
-  pool:
-    vmImage: 'ubuntu-latest'
+    - job: Build_linux
+      pool:
+        vmImage: 'ubuntu-latest'
 
-  steps:
-  - script: |
-      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      sudo apt-get update
-      sudo apt-get install -y g++-5 mesa-common-dev g++-multilib g++-5-multilib
-    displayName: 'apt install'
-    
-  - script: |
-      cd xpcPlugin && cmake . && make
-    displayName: 'make'
+      steps:
+      - script: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y g++-5 mesa-common-dev g++-multilib g++-5-multilib
+        displayName: 'apt install'
+        
+      - script: |
+          cd xpcPlugin && cmake . && make
+        displayName: 'make'
 
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'xpc-linux'
-      targetPath: 'xpcPlugin/output/'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-linux'
+          targetPath: 'xpcPlugin/output/'
 
-- job: Build_windows
-  pool:
-    vmImage: 'vs2017-win2016'
+    - job: Build_windows
+      pool:
+        vmImage: 'vs2017-win2016'
 
-  variables:
-    solution: 'xpcPlugin/xpcPlugin/xpcPlugin.sln'
-    buildPlatform: 'Win32|x64'
-    buildConfiguration: 'Release'
-    appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+      variables:
+        solution: 'xpcPlugin/xpcPlugin/xpcPlugin.sln'
+        buildPlatform: 'Win32|x64'
+        buildConfiguration: 'Release'
+        appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
-  steps:
-  - task: NuGetToolInstaller@0
+      steps:
+      - task: NuGetToolInstaller@0
 
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(solution)'
 
-  - task: VSBuild@1
-    inputs:
-      platform: 'Win32'
-      solution: '$(solution)'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      - task: VSBuild@1
+        inputs:
+          platform: 'Win32'
+          solution: '$(solution)'
+          configuration: '$(buildConfiguration)'
+          msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
-  - task: VSBuild@1
-    inputs:
-      platform: 'x64'
-      solution: '$(solution)'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      - task: VSBuild@1
+        inputs:
+          platform: 'x64'
+          solution: '$(solution)'
+          configuration: '$(buildConfiguration)'
+          msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'xpc-windows'
-      targetPath: 'xpcPlugin/output'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-windows'
+          targetPath: 'xpcPlugin/output/'
+  
+  - stage: Deploy
+    jobs:
+    - job: Package_Binaries
+      pool:
+        vmImage: 'ubuntu-latest'
+
+      steps:
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-macos'
+          targetPath: $(System.DefaultWorkingDirectory)/XPlaneConnect
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-linux'
+          targetPath: $(System.DefaultWorkingDirectory)/XPlaneConnect
+      
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'xpc-windows'
+          targetPath: $(System.DefaultWorkingDirectory)/XPlaneConnect
+
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'XPlaneConnect'
+          targetPath: $(System.DefaultWorkingDirectory)/XPlaneConnect
+
   # - task: CopyFiles@2
   #   inputs:
   #     sourceFolder: 'xpcPlugin'
