@@ -7,48 +7,43 @@ trigger:
 - ms-*
 
 jobs:
-# - job: Build_macOS
-#   pool:
-#     vmImage: 'macos-latest'
+- job: Build_macOS
+  pool:
+    vmImage: 'macos-latest'
 
-#   steps:
-#   - task: Xcode@5
-#     inputs:
-#       actions: 'build'
-#       scheme: ''
-#       sdk: 'macosx10.14'
-#       configuration: 'Release'
-#       xcWorkspacePath: 'xpcPlugin/xpcPlugin.xcodeproj'
-#       xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
-#   - task: PublishPipelineArtifact@0
-#     inputs:
-#       artifactName: 'xpc-osx-64.xpl'
-#       targetPath: 'xpcPlugin/XPlaneConnect/xpc-osx-64.xpl'
+  steps:
+  - task: Xcode@5
+    inputs:
+      actions: 'build'
+      scheme: ''
+      sdk: 'macosx10.14'
+      configuration: 'Release'
+      xcWorkspacePath: 'xpcPlugin/xpcPlugin.xcodeproj'
+      xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'xpc-macos'
+      targetPath: 'xpcPlugin/output'
 
-# - job: Build_linux
-#   pool:
-#     vmImage: 'ubuntu-latest'
+- job: Build_linux
+  pool:
+    vmImage: 'ubuntu-latest'
 
-#   steps:
-#   - script: |
-#       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-#       sudo apt-get update
-#       sudo apt-get install -y g++-5 mesa-common-dev g++-multilib g++-5-multilib
-#     displayName: 'apt install'
+  steps:
+  - script: |
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+      sudo apt-get update
+      sudo apt-get install -y g++-5 mesa-common-dev g++-multilib g++-5-multilib
+    displayName: 'apt install'
     
-#   - script: |
-#       cd xpcPlugin && cmake . && make
-#     displayName: 'make'
+  - script: |
+      cd xpcPlugin && cmake . && make
+    displayName: 'make'
 
-#   - task: PublishPipelineArtifact@0
-#     inputs:
-#       artifactName: 'xpc-linux-32.xpl'
-#       targetPath: 'xpcPlugin/xpc-linux-32.xpl'
-
-#   - task: PublishPipelineArtifact@0
-#     inputs:
-#       artifactName: 'xpc-linux-64.xpl'
-#       targetPath: 'xpcPlugin/xpc-linux-64.xpl'
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'xpc-linux'
+      targetPath: 'xpcPlugin/output/'
 
 - job: Build_windows
   pool:
@@ -81,15 +76,19 @@ jobs:
       configuration: '$(buildConfiguration)'
       msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
-  - task: CopyFiles@2
+  - task: PublishPipelineArtifact@0
     inputs:
-      sourceFolder: 'xpcPlugin'
-      contents: 'xpc-windows-*.xpl'
-      targetFolder: $(Build.ArtifactStagingDirectory)
+      artifactName: 'xpc-windows'
+      targetPath: 'xpcPlugin/output'
+  # - task: CopyFiles@2
+  #   inputs:
+  #     sourceFolder: 'xpcPlugin'
+  #     contents: 'xpc-windows-*.xpl'
+  #     targetFolder: $(Build.ArtifactStagingDirectory)
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: xpc-windows
+  # - task: PublishBuildArtifacts@1
+  #   inputs:
+  #     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+  #     artifactName: xpc-windows
   
     
