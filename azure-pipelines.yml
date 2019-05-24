@@ -4,10 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
 
 trigger:
-- ms-azure-linux
+- ms-azure-tests
 
 jobs:
-- job: Build
+- job: Build_macOS
   pool:
     vmImage: 'macos-latest'
 
@@ -25,7 +25,7 @@ jobs:
       artifactName: 'xpc-osx-64.xpl'
       targetPath: 'xpcPlugin/XPlaneConnect/xpc-osx-64.xpl'
 
-- job: Build
+- job: Build_linux
   pool:
     vmImage: 'ubuntu-latest'
 
