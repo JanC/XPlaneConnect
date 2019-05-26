@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../output/</OutDir>
+    <OutDir>../XPlaneConnect/</OutDir>
     <TargetExt>.xpl</TargetExt>
     <IncludePath>..\SDK\CHeaders\XPLM;$(IncludePath)</IncludePath>
     <LibraryPath>..\xpcPlugin\SDK\Libraries\Win;$(LibraryPath)</LibraryPath>
@@ -95,7 +95,7 @@
     <LibraryPath>..\xpcPlugin\SDK\Libraries\Win;$(LibraryPath)</LibraryPath>
     <TargetName>win</TargetName>
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../output/64/</OutDir>
+    <OutDir>../XPlaneConnect/64/</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -13,7 +13,7 @@ trigger:
   # pr:
   #   - '*'
 variables:
-  xpcBuildOutputPath: xpcPlugin/output/
+  xpcBuildOutputPath: xpcPlugin/XPlaneConnect/
   xpcArtifactNameLinux: xpc-linux
   xpcArtifactNameMac: xpc-macos
   xpcArtifactNameWindows: xpc-windows
